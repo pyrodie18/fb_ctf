@@ -1,0 +1,391 @@
+<form stylesheet="dash_style.css">
+  <search id="base_search">
+    <query>
+index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failures" OR sourcetype="ctf_hints")
+      | `get_lookups`
+      | search $team_id$
+      | transaction level_id team_id
+      | eval attempt = 1
+      | eval first_go = if ((sourcetype="ctf_activity" AND eventcount=1),1,0)
+      | eval used_hint = if (sourcetype="ctf_hints",1,0)
+      | eval second_go = if ((sourcetype="ctf_activity" AND eventcount &gt; 1),1,0)
+      | eval wrong_guess = if (sourcetype="ctf_failures",1,0)
+      | eval used_hint_then_right = if ((used_hint=1 AND second_go=1),1,0)
+      | eval used_hint_still_wrong = if ((used_hint=1 AND second_go=0),1,0)
+      | eval two_time_go_own_own = if ((used_hint=0 AND second_go=1),1,0)
+      | append [|inputlookup levels | fields title]
+      | stats max(activity_ts) as activity_ts, sum(attempt) as attempt, sum(first_go) as first_go, sum(used_hint) as used_hint, sum(second_go) as second_go, sum(wrong_guess) as wrong_guess, sum(used_hint_then_right) as used_hint_then_right, sum(used_hint_still_wrong) as used_hint_still_wrong, sum(two_time_go_own_own) as two_time_go_own_own, max(hint_ts) as hint_ts, max(_time) as _time  by title
+    </query>
+  </search>
+  <search id="points_search">
+    <query>
+      index=ctf (sourcetype=ctf_scores  OR sourcetype="ctf_hints" )
+      |`get_lookups` 
+      | search $team_id$ 
+      | eval points = if(isnull(points),0,points), penalty = if(isnull(penalty),0,penalty)
+      | sort _time
+      | streamstats sum(points) as total_points sum(penalty) as total_penalty by team_id
+      | eval current_score = total_points - total_penalty
+      | timechart last(current_score) as current_score
+      | filldown
+    </query>
+  </search>
+  <label>Team Details</label>
+  <fieldset submitButton="false">
+    <input type="dropdown" token="team_id" searchWhenChanged="true">
+      <label>Team</label>
+      <prefix>team_id=</prefix>
+      <fieldForLabel>team_name</fieldForLabel>
+      <fieldForValue>team_id</fieldForValue>
+      <search>
+        <query>| inputlookup teams</query>
+        <earliest>0</earliest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Problems Attempted</title>
+      <single>
+        <search base="base_search">
+          <query> 
+      | sort _time
+      | streamstats count(attempt) as attempt
+      | timechart max(attempt) by team_id
+      | filldown
+          </query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="height">125</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">large</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Hints Used</title>
+      <single>
+        <search base="base_search">
+          <query>| sort hint_ts
+      | eval _time = strptime(hint_ts, "%Y-%m-%d %H:%M:%S") 
+      | streamstats sum(used_hint) as used_hint
+      | timechart max(used_hint) by team_id
+      | filldown</query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="height">125</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">large</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Problems Completed</title>
+      <single>
+        <search base="base_search">
+          <query>
+      | eval completed = if(first_go=1,1,if(second_go=1,1,0))
+      | sort activity_ts
+      | eval _time = strptime(activity_ts, "%Y-%m-%d %H:%M:%S")
+      | streamstats sum(completed) as completed
+      | timechart max(completed) as "Problems Completed"
+      | filldown
+          </query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="height">125</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">large</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>% of Problems Completed</title>
+      <single>
+        <search base="base_search">
+          <query>
+      | eval completed = if(first_go=1,1,if(second_go=1,1,0))
+      | stats count as total_problems, suM(completed) as total_completed
+      | eval per_complete = round(((total_completed/total_problems)*100),0)
+      | table per_complete            
+          </query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="height">125</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">large</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unit">%</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Total Points</title>
+      <single>
+        <search base="points_search">
+          <query>
+
+          </query>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="height">125</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">large</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Position</title>
+      <single>
+        <search>
+          <query>
+            index=ctf (sourcetype=ctf_scores  OR sourcetype="ctf_hints" )
+|`get_lookups` 
+| eval points = if(isnull(points),0,points), penalty = if(isnull(penalty),0,penalty)
+| sort _time
+| streamstats sum(points) as total_points sum(penalty) as total_penalty by team_id
+| eval current_score = total_points - total_penalty
+| stats last(current_score) as current_score by team_id
+| sort - current_score
+| streamstats count as current_position
+| search $team_id$
+| fields current_position
+          </query>
+          <earliest>0</earliest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="height">125</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x65a637","0x6db7c6","0xf7bc38","0xf58f39","0xd93f3c"]</option>
+        <option name="rangeValues">[0,30,70,100]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">large</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">0</option>
+        <option name="useThousandSeparators">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Score History</title>
+      <chart>
+        <search base="points_search">
+          <query>| rename current_score as "Score"</query>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.showDataLabels">minmax</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">standard</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.lineWidth">2</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trellis.splitBy">_aggregation</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Answer History</title>
+      <viz type="timeline_app.timeline">
+        <search>
+          <query>index=*  (sourcetype="ctf_failures" OR (sourcetype="ctf_activity" action=captured))
+| `get_lookups`
+| search $team_id$
+| eval result=if(sourcetype ="ctf_activity","Correct",if(sourcetype = "ctf_failures","Wrong","Session"))
+| table _time, team_name, result</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="height">114</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="timeline_app.timeline.axisTimeFormat">SECONDS</option>
+        <option name="timeline_app.timeline.colorMode">categorical</option>
+        <option name="timeline_app.timeline.maxColor">#DA5C5C</option>
+        <option name="timeline_app.timeline.minColor">#FFE8E8</option>
+        <option name="timeline_app.timeline.numOfBins">6</option>
+        <option name="timeline_app.timeline.tooltipTimeFormat">SECONDS</option>
+        <option name="timeline_app.timeline.useColors">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </viz>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Problem Summary</title>
+      <table>
+        <search>
+          <query>index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
+| `get_lookups`
+| search $team_id$
+| transaction by level_id
+| eval attempt = 1
+| eval first_go = if ((sourcetype="ctf_scores" AND eventcount=1),1,0)
+| eval used_hint = if (sourcetype="ctf_hints",1,0)
+| eval second_go = if ((sourcetype="ctf_scores" AND eventcount&gt;1),1,0)
+| eval wrong_guess = if (sourcetype="ctf_failures",1,0)
+| eval completed = if((first_go = 1 OR second_go = 1),1,0)
+| append [| inputlookup levels | table level_id, title]
+| stats sum(attempt) as attempt, sum(first_go) as first_go, sum(used_hint) as used_hint, sum(wrong_guess) as wrong_guess, sum(completed) as completed  by level_id, title
+| fillnull value=0
+| eval lower_title = lower(title)
+| sort lower_title
+| table title, attempt, completed, first_go, wrong_guess, used_hint
+| foreach attempt, completed, first_go, wrong_guess, used_hint [eval &lt;&lt;FIELD&gt;&gt; = if(&lt;&lt;FIELD&gt;&gt; = 1, "True","False")]
+| rename title as "Title", attempt as "Attempted", completed as "Completed", first_go as "First Time Go", wrong_guess as "Incorrect Guess(es)", used_hint as "Used Hint"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="Attempted">
+          <colorPalette type="map">{"True":#65A637,"False":#D93F3C}</colorPalette>
+        </format>
+        <format type="color" field="Completed">
+          <colorPalette type="map">{"True":#65A637}</colorPalette>
+        </format>
+        <format type="color" field="Used Hint">
+          <colorPalette type="map">{"True":#D93F3C}</colorPalette>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <title>Player History</title>
+      <table>
+        <search>
+          <query>index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
+| `get_lookups`
+| search $team_id$
+| eval action = if(sourcetype="ctf_failures","Attempted",if(sourcetype="ctf_scores","Solved","Hint"))
+| eval msg = if(action="Attempted","Incorrectly guessed " + flag, if(action="Solved","Correctly solved " + title, "Recieved hint on " + title))
+| table _time, title, action, msg
+| sort - _time
+| rename title as "Problem", action as "Action", msg as "Message"</query>
+          <earliest>0</earliest>
+          <latest></latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="Action">
+          <colorPalette type="map">{"Solved":#65A637,"Hint":#D93F3C}</colorPalette>
+        </format>
+      </table>
+    </panel>
+  </row>
+</form>

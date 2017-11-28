@@ -1,0 +1,18 @@
+.ccat-Correct {
+  fill: rgb(0,255,0) !important;
+  stroke: rgb(0,255,0) !important;  
+}
+.ccat-Wrong {
+  fill: rgb(255,0,0) !important;
+  stroke: rgb(255,0,0) !important;  
+}
+
+#question_history {
+    width: 50% !important;
+}
+#question_incorrect_answers {
+    width: 20% !important;
+}
+#question_contestants_list {
+    width: 30% !important;
+}

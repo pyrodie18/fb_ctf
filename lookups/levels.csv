@@ -1,0 +1,327 @@
+"level_id",bonus,"bonus_dec","bonus_fix","country_id",description,flag,hint,"iso_code",penalty,points,title,type
+1,0,0,0,21,"Really not much of a clue needed, find the flag (link below).","acsc2017{FrameByFrame}","GIMP is easily able to open up the individual laywers of a .gif image",CG,30,40,"animate_me",flag
+10,0,0,0,92,"Once again, need to find the stack but this time, we're not looking for an address at all. Click the link below to download the image.  Find the normal flag (acsc2017{######})
+
+Hint:  What's difference between this file and the file used in the first one?","acsc2017{FindOtherSources}","Do some research on how Flickr names their files.",NA,75,100,"find_the_stack2",flag
+11,0,0,0,141,"Oh wow!  Look at all these flags!!!  Hmmm QRCodes again?  Wait, not all of these are QRCodes.  
+
+Use your Fu to decode these obscure bar codes.  There's plenty of free programs/apps once you know what format these are in.
+
+","acsc2017{a_little_like_last_year_is_ok}","Look at using iOS Tool called ""Scanner"" and Windows tool called ""Barcode Reader Firmware"" free trial",VE,60,80,QRPartDeux,flag
+12,0,0,0,163,"1. You have been given a public key encryption program based on RSA that has a mistake in it (link below).
+2. Your job is to decrypt the file
+3. There are no tricks in the source code, you may believe the comments that tell you which parts of the code to ignore
+4. It would be __extremely__ prudent to use the provided skeleton as a starting point. 
+5. Good Luck!","acsc2017{AnEncryptedFlg}","This implemention leaks one of the secret primes used in RSA.  With both primes the secret phi of n can be computed as (p-1) * (q-1). The code for this is in the RSA implementation provided to the competitors in the challenge.",GY,67,90,"broken_rsa",flag
+14,0,0,0,109,"The attached script is currently listening at 52.35.79.40:5007.  Connect and find the flag.  Source code in link below","acsc2017{congrats_on_winning_the_race}","Insecure temporary file usage. Users can overwrite temporary files from other threads. Since the version option writes a command to a file and then executes it, a user can overwrite the version command with an arbitrary commmand.",PY,37,50,"temp_files",flag
+15,0,0,0,111,"Situation:  The year is 2019 and you're a bladerunner.  You have received a report that there is a replicant has managed to get themselves employeed at Tyrell.  Unfortunately the details are slim and your little eye machine is out of action (parts have been on order for over a year).  So, you're forced to take the little bit of information that you have on the likely replicant and go through the Tyrell personnel records and find them.  Unfortunately, Tyrell is still partying like its 1899 and isn't using a database system and instead has a simple page with information for each person on it.  Connect to the records system at 52.35.79.40:5004.
+
+What do we know?
+
+Today is 3/12/2036
+Replicants generally have a 4 year life span
+Female
+Between 5'6 and 5'8
+Red Hair
+Brown Eyes
+
+Hint:  4 year life span means it must have been working for the company for less than 4 years","acsc2017{IHopeYouScriptedThis}","There are several python modules out there (BeautifulSoup is very popular) that can scrape a website.  ",RO,45,60,"soupy_files",flag
+16,0,0,0,54,"Read the flag. ssh -p 2222 overflow1@52.35.79.40 Password is ""overflow"".  Link to source code below.
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{nothing_on_the_stack_is_safe}","",ID,0,30,overflow1,flag
+17,0,0,0,87,"Read the flag. ssh -p 2222 overflow2@52.35.79.40 Password is ""overflow"".  Link to source code below.
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{look_out_we_got_a_stack_wizard_over_here}","",MN,0,40,overflow2,flag
+18,0,0,0,85,"Read the flag. ssh -p 2222 overflow3@52.35.79.40 Password is ""overflow"".  Link to source code below.
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{now_you_control_the_flow}","",ML,0,50,overflow3,flag
+19,0,0,0,137,"Read the flag. ssh -p 2222 overflow4@52.35.79.40 Password is ""overflow"".  Link to source code below.
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{eip_is_all_you_need}","",UA,0,50,overflow4,flag
+2,0,0,0,164,"Someone thought that using telnet was a good idea.  Guess this should make your job a lot easier.....Find the flag (link below).","acsc2017{UseSSHDummy}","Try looking at each side of the conversation individually",HN,22,30,"find_the_flag",flag
+20,0,0,0,86,"Read the flag. ssh -p 2222 overflow5@52.35.79.40 Password is ""overflow"".  Link to source code below.
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{every_day_im_overflowin}","",MM,0,65,overflow5,flag
+21,0,0,0,150,"OTP - The only unbreakable encryption (google it!).  We're so confident in this encryption, we'll take any string you send, and return it along with the flag!  Connect to 52.35.79.40:5006 and give it a try.  Good luck trying to break unbreakable encryption! (source code in link below)","acsc2017{depth_defeats_all}","The code gets a random key each time, but its only 512 bytes. Messages longer than 512 bytes will reuse the key.",AR,64,85,OTP,flag
+22,0,0,0,81,"Situation:  You're trying to log into the computer network but the security system only allows other computers to log in (no humans allowed).  Prove to the system that you're not a computer by answering a bunch of math questions quickly and get into the system.  Connect to the math machine at 52.35.79.40:5003.","acsc2017{ScriptingIsFun}","Biggest trick here is make sure you're using the correct encoding, and that you convert symbols properly.",LY,37,50,"math_machine",flag
+23,0,0,0,26,"The year is 2019, and you're a bladerunner.  You've managed to get on a terminal connected to the Tyrell Corps internal network but first, you have to login.  You check the desk for a username/password but the only thing you see is the number 581 written on a sticky pad on the corner of the screen.  You can connect to the system by pointing your web browser to 52.35.79.40:5002","acsc2017{KeepClickin}","Cookies can be used to store all kinds of things (including how many time's you've clickon something)",CR,34,45,"how_the_hell",flag
+24,0,0,0,42,"Read the flag. ssh -p 2222 helloworld-py@52.35.79.40 Password is ""helloworld"".
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{should_you_trust_that_import?}","Check the file permissions.  What kind of trouble can you get into?",FI,37,50,"helloworld_py",flag
+25,0,0,0,140,"Read the flag. ssh -p 2222 helloworld-c2@52.35.79.40 Password is ""helloworld"". 
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{bad_sanitization_is_bad_and_should_feel_bad}","The suid\_c\_wrapper will take anything as the second arg as long as it doesn't have a space in it and pass it to a system call as root.",UZ,41,55,"helloworld_c2",flag
+26,0,0,0,64,"Read the flag. ssh -p 2222 helloworld-c@52.35.79.40 Password is ""helloworld"".  
+
+WARNING:  Everything you do is gone as soon as you leave, so save your stuff locally if you want to keep it.","acsc2017{setuid_and_call_system_what_could_possibly_go_wrong}","The suid\_c\_wrapper will take anything as the second arg and pass it to a system call as root.",JP,34,45,"helloworld_c",flag
+27,0,0,0,17,"Looks like the acsc2017 webmaster was putting together a new wordpress site but forgot to secure the file that contains the site's database password and pretty much everything else important.  
+
+WARNING:  Remember absolutely no hacking of any kind is authorized for this challenge.  You should be able to find the answer location using simple open source techniques and the location is publicly accessible.  It will be very obvious that you have the correct web site when you find it.  If you aren't sure, you're not at the right place.","acsc2017{SecureThoseConfigFiles}","Check out google ""dorking"".  What is the name of the file this information is stored in?  The text acsc2017 is contained within the file.",BW,30,40,OSINT2,flag
+28,0,0,0,122,"Don't you hate it when people leave sensitive files exposed on the Internet?  Looks like someone working at just-another-flag.us left some pdf files with lots of juicy information (including this flag) exposed online where anyone (or anything) could find it....Can you?
+
+WARNING:  Remember absolutely no hacking of any kind is authorized for this challenge.  You should be able to find the answer location using simple open source techniques and the location is publicly accessible.  It will be very obvious that you have the correct web site when you find it.  If you aren't sure, you're not at the right place.","acsc2017{DidYouUseGoogle}","Check out google ""dorking"".  We know the site we are looking for so how can we specify that we only want results from there?",SS,30,40,OSINT3,flag
+29,0,0,0,9,"Point your browser to 52.35.79.40:5001.  The flag is stored in a file in the base directory called flag.txt.....Now just get to it.
+
+Hint:  No tools (i.e. kali, or anything else) is required.  By the way, tell us
+what you think of the site while you're there.","acsc2017{UpdateYourPlugins}","The problem with Wordpress sites is that a lot of plugins are vulnerable too.  This page is running crayon-syntax-highlighter-2.6.9 which has a very nasty vulnerability in it.",BF,41,55,"forgot_to_patch",flag
+3,0,0,0,23,"You've been able to get on a router and capture some traffic in an effort to map out the the corporate network.  Your intelligence team has told you that your target device has an IP address of 172.16.58.47 but no one knows that actual location of it.  Examine the network traffic (link below) and see if you can figure out the location of that device.
+
+NOTE:  I screwed up and used the format ACSC{<flag>} when I put this together and didn't have time to recreate it all.","ACSC{UnderTheMoon}","Two steps to solve this one.  Step one figure out what router is advertising that network in OSPF.  Step two, look at the SNMP traffic from that router.",CL,45,60,"where_am_i",flag
+30,0,0,0,128,"A haiku is a 3 line poem with 5,7, and 5 symbols.  Connect to 52.35.79.40:5000 and try your hand at one.  Source code in link below.","acsc2017{user_input_is_evil}","The user can supply information that is used as an object's member, which is referenced by the code later.",TH,45,60,"cyber_haiku",flag
+31,0,0,0,25,"Not a lot to tell you. The click on the link below to get the binary and then find the flag.","acsc2017{arent_interpreters_great?}","",CO,0,90,checker,flag
+32,0,0,0,24,"We've recovered a binary (link below) that seems to contain some additional protections.  Although it does seem remarkably similar to the last one we came across...","acsc2017{mg8gj7GnONlolhIrwN2p}","",CM,0,150,checker2,flag
+33,0,0,0,19,"What is the current version of the Kernal currently installed?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{3.10.0-514.26.2.el7.x86_64}","",CA,0,5,"Nix 1",flag
+34,0,0,0,5,"What version of perl is currently installed?
+
+All answers should be in acsc2017{answer} format.  Use the full version listing from yum.
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{4:5.16.3-291.el7}","",AZ,0,5,"Nix 2",flag
+36,0,0,0,146,"What time did yum update the last file? Use the format MMM DD HH:MM:SS
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{Jul 16 04:00:06}","",ZM,0,5,"Nix 4",flag
+37,0,0,0,154,"When running a program, what is the first file searched to execute the program?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{/usr/local/sbin}","",CD,0,5,"Nix 5",flag
+38,0,0,0,157,"The flag is stored in the file called ""readme"" in the users home directory.
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{boJ9jbbUNNfktd78OOpsqOltutMc3MY1}","",DZ,0,5,"Nix 6",flag
+39,0,0,0,44,"The flag is stored in the file called ""-"" in the users home directory
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9}","",GB,0,5,"Nix 7",flag
+4,0,0,0,91,"In the movie Bladerunner, Tyrell is as an evil corporation.  In reality it appears that Tyrell may be hosting a router on an IP address from England.  What is the manufacturer of that router?  FYI, use the format acsc2017{Manufacturer}
+
+NOTE:  This is an open source intelligence challenge.  Use only open source resources to find the answer.  ABSOLUTELY NO HACKING TECHNIQUES ARE AUTHORIZED.","acsc2017{MikroTik}","www.shodan.io is a site that continually scrapes the web for a variety of information.",MZ,30,40,OSINT1,flag
+40,0,0,0,102,"The flag is stored in the file called ""spaces in this filename"" in the users home directory.
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK}","",PG,0,5,"Nix 8",flag
+41,0,0,0,72,"The flag is stored in the file located in the ""WhereIsIt"" folder in the users home directory
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{pIwrPrtPN36QITSp3EQaw936yaFoFgAB}","",KZ,0,5,"Nix 9",flag
+42,0,0,0,52,"The flag is stored in the human readable file located in the ""WhichFile"" folder int he users home directory
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{koReBOKuIDDepwhWk7jZC0RTdopnAYKh}","",HR,0,5,"Nix 10",flag
+43,0,0,0,34,"The flag is located in the list.txt file next to the word ""glistens""
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{IEAMLoU7M05vlfNIhojUzeHn3KhsLsUJ}","",EC,0,5,"Nix 11",flag
+44,0,0,0,65,"The flag is the only line in once.txt that is displayed once
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR}","",KE,0,5,"Nix 12",flag
+45,0,0,0,166,"The flag human readable text next to a ""="" sign in eo.txt
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk}","",MA,0,5,"Nix 13",flag
+46,0,0,0,48,"The flag is the only line that has changed between passwrd.old and passwrd.new
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{vjCAPvOdX6LFCWkuzTXQixnb4naLFsR}","",GN,0,5,"Nix 14",flag
+47,0,0,0,59,"The flag is the only line in ""MssingLetter"" that doesn't contain a ""z""
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{7dHDa5wpPxnb4naLFsRT7gBxu81TCaeu}","",IR,0,5,"Nix 15",flag
+48,0,0,0,66,"The flag is the piece of text that is displayed the most times in the third column of ListOfLists
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{9SsF5MwhZUTB6FneH4lRmPXOwWteZ2s6}","",KG,0,10,"Nix 16",flag
+49,0,0,0,30,"The flag is the character in the 10th position in the fourth column of ListOfLists that is displayed most often
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{b}","",DE,0,10,"Niz 17",flag
+5,0,0,0,50,"Your boss just handed you this pcap (link below) that one of your network sensors captured.  He's positive that there is something fishy going on here but has no clue what it is.","acsc2017{SneakySneakySneaky}","It seems like the only thing that is changing is the source ports.  But that's normal....right?",GR,52,70,"slow_mover",flag
+50,0,0,0,151,"A program is running automatically every minute that gets the flag....find it
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{3z96iN7exS00f8Vy0YIOeEueZOVn631B}","",AU,0,5,"Nix 18",flag
+51,0,0,0,121,"Inside the home directory there is a file that is a symbolic link. The flag is the MD5 hash of the full path to the actual file.
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{de1f35687ae6e88b2ed7d56aa83504b3}","",SO,0,5,"Nix 19",flag
+52,0,0,0,73,"The flag is the size (in bytes) of the physical harddrive for the machine
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{17501782016}","",LA,0,5,"Nix 20",flag
+53,0,0,0,3,"Somewhere within the /etc directory there is a file with the md5 hash of ""8bd2ab7fa2f80c1af4c1ff05f85f0035"". What is the name of the file?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password","acsc2017{ssh_config}","",AO,0,10,"Nix 21",flag
+54,0,0,0,98,"The flag is located in a file called hidden_flag on a part of the drive this is not currently accessible.
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Nix Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  acsc2017
+Password:  password"," acsc2017{IMountedThePartition}","",NO,0,10,"Nix 22",flag
+55,0,0,0,173,"What is the name of the built-in administrator account?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password"," acsc2017{defAdmin}","",SN,0,5,"Windows 1",flag
+57,0,0,0,168,"There is a file called flag in the base directory for the drive. What's the flag?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password","acsc2017{MountThePartition}","",MX,0,10,"Windows 3",flag
+58,0,0,0,96,"What is the IP address for the DNS server for the computer?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password","acsc2017{10.50.12.12}","",NI,0,5,"Windows 4",flag
+59,0,0,0,104,"What date/time was windows installed (use format MMDDYYYY HHMMSS)
+
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password","acsc2017{07162017 195311}","",PL,0,10,"Windows 5",flag
+6,0,0,0,57,"Looks like we got our hands on a SQL dump from a Wordpress site (link below).  What is the administrator's password?
+
+Note:  enter the flag in the format acsc2017{<password>}","acsc2017{trustno1}","Find the admin user in the ""users"" table to find their MD5 hash.  There's plenty of tools to break MD5 hashes",IN,22,30,"whats_my_password",flag
+60,0,0,0,14,"What is the version of the operating system?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password","acsc2017{10.0.15063}","",BO,0,5,"Windows 6",flag
+61,0,0,0,116,"What is the computers name?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password","acsc2017{WhatsMyName}","",SE,0,5,"Windows 7",flag
+62,0,0,0,156,"What is the maximum password age (in days)?
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password","acsc2017{65}","",CN,0,5,"Windows 8",flag
+63,0,0,0,152,"Admin deleted an account. What is the SID of the account that was deleted?","acsc2017{S-1-5-21-2833193197-2555894616-3088220344-1000}","",BR,0,10,"Windows 9",flag
+64,0,0,0,112,"You notice a command prompt flash across the screen about every 5 minutes
+
+All answers should be in acsc2017{answer} format
+
+NOTE:  This problem requires the Windows Grabbag VM.  It is probably already loaded onto your system.  If not, it can be downloaded from the link below.
+
+Username:  admin
+Password:  password","acsc2017{CronIsBetter}","",RS,0,5,"Windows 10",flag
+65,0,0,0,176,"The flag is acsc2017{TestFlag}","acsc2017{TestFlag}","",US,0,10,"Test Flag",flag
+66,0,0,0,142,"After exploiting onto the webserver you exfil the backend database used for authentication. A python script has been written to interact with the database. It is your job to get the data out.  What is the hash of the admin password?  You can connect by sshing 
+
+ssh -p 2222 sql-foo@52.35.79.40
+Password:  sql","acsc2017{aa1207e4ff74d0c260f9f07f3c56aebf2ef95c568837255ed312be500eb6d789}","",VN,0,50,SQL1,flag
+67,0,0,0,149,"You MUST complete SQL1 in order to do this one....what is the admin's password?","acsc2017{nimda}","",AF,0,40,SQL2,flag
+7,0,0,0,158,"Looks like someone left a copy of their website backup files laying around (link below).  What's the password used to connect to the database server?","acsc2017{weak_password}","Google where Wordpress stores its database config info",FR,18,25,"whats_my_password2",flag
+8,0,0,0,68,"Taorhsthyoa  ghusea}ohotsrh   fe tan ueti ot  mgtyta  eogccw__nn yute ri oteeisbh lt taallonou mI norhlrtrhha2{gpdw     g  gl h ?siucflet eboyngt re gi uefihet. 07ou_oDdsefadde i to nixms  o.ob g  1_dielitno
+
+
+It looks like all of the parts of a flag are sitting there but what does it all mean?","acsc2017{we_go_up_and_down}","Do some research on rail fence ciphers.  Make sure your alphabet includes _{}?",KP,48,65,"riding_the_rollercoaster",flag
+9,0,0,0,162,"In the book ""Ready Player One"", Innovative Online Industries (IOI) is trying to figure out where Wade lives so that they can make him an offer he can't refuse.  Unfortunately, the only real clue that they currently have is this photo (link below) that he posted on his profile.  What street does he live on?
+
+Note:  Enter the flag as acsc2017{<roadname>}.  Do not include the road description (rd, st, dr, etc)","acsc2017{Oakdale}","Sometimes it's possible to include GPS locations within the metadata of an image.",GT,22,30,"find_the_stack",flag
