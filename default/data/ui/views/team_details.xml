@@ -1,7 +1,7 @@
 <form stylesheet="dash_style.css">
   <search id="base_search">
     <query>
-index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failures" OR sourcetype="ctf_hints")
+      index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failures" OR sourcetype="ctf_hints")
       | `get_lookups`
       | search $team_id$
       | transaction level_id team_id
@@ -49,10 +49,10 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <single>
         <search base="base_search">
           <query> 
-      | sort _time
-      | streamstats count(attempt) as attempt
-      | timechart max(attempt) by team_id
-      | filldown
+            | sort _time
+            | streamstats count(attempt) as attempt
+            | timechart max(attempt) by team_id
+            | filldown
           </query>
         </search>
         <option name="colorBy">value</option>
@@ -79,11 +79,13 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <title>Hints Used</title>
       <single>
         <search base="base_search">
-          <query>| sort hint_ts
-      | eval _time = strptime(hint_ts, "%Y-%m-%d %H:%M:%S") 
-      | streamstats sum(used_hint) as used_hint
-      | timechart max(used_hint) by team_id
-      | filldown</query>
+          <query>
+            | sort hint_ts
+            | eval _time = strptime(hint_ts, "%Y-%m-%d %H:%M:%S") 
+            | streamstats sum(used_hint) as used_hint
+            | timechart max(used_hint) by team_id
+            | filldown
+          </query>
         </search>
         <option name="colorBy">value</option>
         <option name="colorMode">none</option>
@@ -110,12 +112,12 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <single>
         <search base="base_search">
           <query>
-      | eval completed = if(first_go=1,1,if(second_go=1,1,0))
-      | sort activity_ts
-      | eval _time = strptime(activity_ts, "%Y-%m-%d %H:%M:%S")
-      | streamstats sum(completed) as completed
-      | timechart max(completed) as "Problems Completed"
-      | filldown
+            | eval completed = if(first_go=1,1,if(second_go=1,1,0))
+            | sort activity_ts
+            | eval _time = strptime(activity_ts, "%Y-%m-%d %H:%M:%S")
+            | streamstats sum(completed) as completed
+            | timechart max(completed) as "Problems Completed"
+            | filldown
           </query>
         </search>
         <option name="colorBy">value</option>
@@ -143,10 +145,10 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <single>
         <search base="base_search">
           <query>
-      | eval completed = if(first_go=1,1,if(second_go=1,1,0))
-      | stats count as total_problems, suM(completed) as total_completed
-      | eval per_complete = round(((total_completed/total_problems)*100),0)
-      | table per_complete            
+            | eval completed = if(first_go=1,1,if(second_go=1,1,0))
+            | stats count as total_problems, suM(completed) as total_completed
+            | eval per_complete = round(((total_completed/total_problems)*100),0)
+            | table per_complete            
           </query>
         </search>
         <option name="colorBy">value</option>
@@ -175,7 +177,6 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <single>
         <search base="points_search">
           <query>
-
           </query>
         </search>
         <option name="colorBy">value</option>
@@ -204,16 +205,16 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
         <search>
           <query>
             index=ctf (sourcetype=ctf_scores  OR sourcetype="ctf_hints" )
-|`get_lookups` 
-| eval points = if(isnull(points),0,points), penalty = if(isnull(penalty),0,penalty)
-| sort _time
-| streamstats sum(points) as total_points sum(penalty) as total_penalty by team_id
-| eval current_score = total_points - total_penalty
-| stats last(current_score) as current_score by team_id
-| sort - current_score
-| streamstats count as current_position
-| search $team_id$
-| fields current_position
+            |`get_lookups` 
+            | eval points = if(isnull(points),0,points), penalty = if(isnull(penalty),0,penalty)
+            | sort _time
+            | streamstats sum(points) as total_points sum(penalty) as total_penalty by team_id
+            | eval current_score = total_points - total_penalty
+            | stats last(current_score) as current_score by team_id
+            | sort - current_score
+            | streamstats count as current_position
+            | search $team_id$
+            | fields current_position
           </query>
           <earliest>0</earliest>
           <sampleRatio>1</sampleRatio>
@@ -244,7 +245,9 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <title>Score History</title>
       <chart>
         <search base="points_search">
-          <query>| rename current_score as "Score"</query>
+          <query>
+            | rename current_score as "Score"
+          </query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -287,11 +290,13 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <title>Answer History</title>
       <viz type="timeline_app.timeline">
         <search>
-          <query>index=*  (sourcetype="ctf_failures" OR (sourcetype="ctf_activity" action=captured))
-| `get_lookups`
-| search $team_id$
-| eval result=if(sourcetype ="ctf_activity","Correct",if(sourcetype = "ctf_failures","Wrong","Session"))
-| table _time, team_name, result</query>
+          <query>
+            index=*  (sourcetype="ctf_failures" OR (sourcetype="ctf_activity" action=captured))
+            | `get_lookups`
+            | search $team_id$
+            | eval result=if(sourcetype ="ctf_activity","Correct",if(sourcetype = "ctf_failures","Wrong","Session"))
+            | table _time, team_name, result
+          </query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
@@ -317,24 +322,26 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <title>Problem Summary</title>
       <table>
         <search>
-          <query>index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
-| `get_lookups`
-| search $team_id$
-| transaction by level_id
-| eval attempt = 1
-| eval first_go = if ((sourcetype="ctf_scores" AND eventcount=1),1,0)
-| eval used_hint = if (sourcetype="ctf_hints",1,0)
-| eval second_go = if ((sourcetype="ctf_scores" AND eventcount&gt;1),1,0)
-| eval wrong_guess = if (sourcetype="ctf_failures",1,0)
-| eval completed = if((first_go = 1 OR second_go = 1),1,0)
-| append [| inputlookup levels | table level_id, title]
-| stats sum(attempt) as attempt, sum(first_go) as first_go, sum(used_hint) as used_hint, sum(wrong_guess) as wrong_guess, sum(completed) as completed  by level_id, title
-| fillnull value=0
-| eval lower_title = lower(title)
-| sort lower_title
-| table title, attempt, completed, first_go, wrong_guess, used_hint
-| foreach attempt, completed, first_go, wrong_guess, used_hint [eval &lt;&lt;FIELD&gt;&gt; = if(&lt;&lt;FIELD&gt;&gt; = 1, "True","False")]
-| rename title as "Title", attempt as "Attempted", completed as "Completed", first_go as "First Time Go", wrong_guess as "Incorrect Guess(es)", used_hint as "Used Hint"</query>
+          <query>
+            index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
+            | `get_lookups`
+            | search $team_id$
+            | transaction by level_id
+            | eval attempt = 1
+            | eval first_go = if ((sourcetype="ctf_scores" AND eventcount=1),1,0)
+            | eval used_hint = if (sourcetype="ctf_hints",1,0)
+            | eval second_go = if ((sourcetype="ctf_scores" AND eventcount&gt;1),1,0)
+            | eval wrong_guess = if (sourcetype="ctf_failures",1,0)
+            | eval completed = if((first_go = 1 OR second_go = 1),1,0)
+            | append [| inputlookup levels | table level_id, title]
+            | stats sum(attempt) as attempt, sum(first_go) as first_go, sum(used_hint) as used_hint, sum(wrong_guess) as wrong_guess, sum(completed) as completed  by level_id, title
+            | fillnull value=0
+            | eval lower_title = lower(title)
+            | sort lower_title
+            | table title, attempt, completed, first_go, wrong_guess, used_hint
+            | foreach attempt, completed, first_go, wrong_guess, used_hint [eval &lt;&lt;FIELD&gt;&gt; = if(&lt;&lt;FIELD&gt;&gt; = 1, "True","False")]
+            | rename title as "Title", attempt as "Attempted", completed as "Completed", first_go as "First Time Go", wrong_guess as "Incorrect Guess(es)", used_hint as "Used Hint"
+          </query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
@@ -362,14 +369,16 @@ index=ctf ((sourcetype="ctf_activity" action=captured) OR sourcetype="ctf_failur
       <title>Player History</title>
       <table>
         <search>
-          <query>index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
-| `get_lookups`
-| search $team_id$
-| eval action = if(sourcetype="ctf_failures","Attempted",if(sourcetype="ctf_scores","Solved","Hint"))
-| eval msg = if(action="Attempted","Incorrectly guessed " + flag, if(action="Solved","Correctly solved " + title, "Recieved hint on " + title))
-| table _time, title, action, msg
-| sort - _time
-| rename title as "Problem", action as "Action", msg as "Message"</query>
+          <query>
+            index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
+            | `get_lookups`
+            | search $team_id$
+            | eval action = if(sourcetype="ctf_failures","Attempted",if(sourcetype="ctf_scores","Solved","Hint"))
+            | eval msg = if(action="Attempted","Incorrectly guessed " + flag, if(action="Solved","Correctly solved " + title, "Recieved hint on " + title))
+            | table _time, title, action, msg
+            | sort - _time
+            | rename title as "Problem", action as "Action", msg as "Message"
+          </query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
