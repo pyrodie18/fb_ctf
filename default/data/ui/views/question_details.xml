@@ -330,13 +330,15 @@
       <title>Question History</title>
       <table>
         <search>
-          <query>index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
-| `get_lookups`
-| search $level_id$
-| eval action = if(sourcetype="ctf_failures","Attempted",if(sourcetype="ctf_scores","Solved","Hint"))
-| eval msg = if(action="Attempted", team_name + " incorrectly guessed " + flag, if(action="Solved", team_name + " correctly solved", team_name + " a recieved hint"))
-| table _time, team_name, action, msg
-| sort - _time</query>
+          <query>
+            index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
+            | `get_lookups`
+            | search $level_id$
+            | eval action = if(sourcetype="ctf_failures","Attempted",if(sourcetype="ctf_scores","Solved","Hint"))
+            | eval msg = if(action="Attempted", team_name + " incorrectly guessed " + flag, if(action="Solved", team_name + " correctly solved", team_name + " a recieved hint"))
+            | table _time, team_name, action, msg
+            | sort - _time
+          </query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
