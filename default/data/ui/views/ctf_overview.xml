@@ -3,11 +3,11 @@
   <search id="base_search">
     <query>
       index=ctf (sourcetype=ctf_scores  OR sourcetype="ctf_hints" )
-|`get_lookups` 
-| eval points = if(isnull(points),0,points), penalty = if(isnull(penalty),0,penalty)
-| sort _time
-| streamstats sum(points) as total_points sum(penalty) as total_penalty by team_id
-| eval current_score = total_points - total_penalty
+      |`get_lookups` 
+      | eval points = if(isnull(points),0,points), penalty = if(isnull(penalty),0,penalty)
+      | sort _time
+      | streamstats sum(points) as total_points sum(penalty) as total_penalty by team_id
+      | eval current_score = total_points - total_penalty
     </query>
     <earliest>0</earliest>
     <progress>
@@ -18,18 +18,22 @@
     </done>
   </search>
   <search id="point_leader" base="base_search">
-    <query>stats last(current_score) as current_score by team_id, team_name
-| sort - current_score
-| head 1</query>
+    <query>
+      stats last(current_score) as current_score by team_id, team_name
+      | sort - current_score
+      | head 1
+    </query>
     <done>
       <set token="point_leader">$result.team_name$</set>
     </done>
   </search>
   <search id="problem_leader" base="base_search">
-    <query> | search sourcetype=ctf_scores
+    <query> 
+      | search sourcetype=ctf_scores
       | stats count as num_completed by team_id, team_name
-| sort - num_completed
-| head 1</query>
+      | sort - num_completed
+      | head 1
+    </query>
     <done>
       <set token="problem_leader">$result.team_name$</set>
     </done>
@@ -67,11 +71,13 @@
       <title>Active Users</title>
       <single>
         <search base="base_search">
-          <query>stats earliest(_time) as _time by team_id 
-| sort _time 
-| streamstats count as num_active_groups 
-| timechart max(num_active_groups) 
-| filldown</query>
+          <query>
+            stats earliest(_time) as _time by team_id 
+            | sort _time 
+            | streamstats count as num_active_groups 
+            | timechart max(num_active_groups) 
+            | filldown
+          </query>
         </search>
         <option name="colorBy">value</option>
         <option name="colorMode">none</option>
@@ -97,8 +103,10 @@
       <title>Total Challenges Complete</title>
       <single>
         <search base="base_search">
-          <query>| search sourcetype=ctf_scores
-| stats count as num_completed</query>
+          <query>
+            | search sourcetype=ctf_scores
+            | stats count as num_completed
+          </query>
         </search>
         <option name="colorBy">value</option>
         <option name="colorMode">none</option>
@@ -176,9 +184,11 @@
       <title>Scores</title>
       <chart>
         <search base="base_search">
-          <query> timechart max(current_score) as score by team_name useother=false 
-| filldown
-| fillnull value=0</query>
+          <query> 
+            timechart max(current_score) as score by team_name useother=false 
+            | filldown
+            | fillnull value=0
+          </query>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
@@ -222,12 +232,14 @@
       <title>Problems Overview</title>
       <viz type="timeline_app.timeline">
         <search>
-          <query>index=ctf  (sourcetype="ctf_failures" OR (sourcetype="ctf_activity" action=captured))
-| `get_lookups`
-| eval result=if(sourcetype ="ctf_activity","Correct","Wrong")
-| table _time title result
-| eval lower_title = lower(title)
-| sort lower_title</query>
+          <query>
+            index=ctf  (sourcetype="ctf_failures" OR (sourcetype="ctf_activity" action=captured))
+            | `get_lookups`
+            | eval result=if(sourcetype ="ctf_activity","Correct","Wrong")
+            | table _time title result
+            | eval lower_title = lower(title)
+            | sort lower_title
+          </query>
           <earliest>0</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -258,12 +270,14 @@
       <title>Team Overview</title>
       <viz type="timeline_app.timeline">
         <search>
-          <query>index=*  (sourcetype="ctf_failures" OR (sourcetype="ctf_activity" action=captured))
-| `get_lookups`
-| eval result=if(sourcetype ="ctf_activity","Correct",if(sourcetype = "ctf_failures","Wrong","Session"))
-| table _time, team_name, result
-| eval lower_name = lower(team_name)
-| sort lower_name</query>
+          <query>
+            index=*  (sourcetype="ctf_failures" OR (sourcetype="ctf_activity" action=captured))
+            | `get_lookups`
+            | eval result=if(sourcetype ="ctf_activity","Correct",if(sourcetype = "ctf_failures","Wrong","Session"))
+            | table _time, team_name, result
+            | eval lower_name = lower(team_name)
+            | sort lower_name
+          </query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
