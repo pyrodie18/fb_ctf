@@ -85,8 +85,7 @@
             | streamstats  sum(attempt) as attempted_problem
             | timechart max(attempted_problem) as attempted_problem
             | filldown
-            | rename attempted_problem as "Attempted Problem"
-          </query>
+            | rename attempted_problem as "Attempted Problem"</query>
         </search>
         <option name="colorBy">value</option>
         <option name="colorMode">none</option>
@@ -182,8 +181,7 @@
             | streamstats  sum(used_hint_still_wrong) as used_hint_still_wrong
             | timechart max(used_hint_still_wrong) as used_hint_still_wrong
             | filldown
-            | rename used_hint_still_wrong as "Used Hint/Still Wrong"
-          </query>
+            | rename used_hint_still_wrong as "Used Hint/Still Wrong"</query>
         </search>
         <option name="colorBy">value</option>
         <option name="colorMode">none</option>
@@ -214,8 +212,7 @@
             | streamstats  sum(two_time_go_own_own) as two_time_go_own_own
             | timechart max(two_time_go_own_own) as two_time_go_own_own
             | filldown
-            | rename two_time_go_own_own as "Used Hint/Still Wrong"
-          </query>
+            | rename two_time_go_own_own as "Used Hint/Still Wrong"</query>
         </search>
         <option name="colorBy">value</option>
         <option name="colorMode">none</option>
@@ -275,15 +272,13 @@
       <title>Contestants Who Completed</title>
       <table>
         <search base="singles_base">
-          <query>
-            | search (first_go = 1 OR second_go = 1)
+          <query>| search (first_go = 1 OR second_go = 1)
             | table team_name title activity_ts first_go used_hint
             | eval lower_name = lower(team_name)
             | sort lower_name
             | fields - lower_name, title
             | eval first_go = if(first_go=1,"True","False"), used_hint = if(used_hint=1,"True","False")
-            | rename team_name as "Team Name", activity_ts as "Completed Time", first_go as "First Time Go", used_hint as "Used Hint"
-          </query>
+            | rename team_name as "Team Name", activity_ts as "Completed Time", first_go as "First Time Go", used_hint as "Used Hint"</query>
         </search>
         <option name="count">20</option>
         <option name="dataOverlayMode">none</option>
@@ -305,8 +300,7 @@
       <title>Incorrect Answer Details</title>
       <table>
         <search>
-          <query>
-            index=ctf sourcetype="ctf_failures"
+          <query>index=ctf sourcetype="ctf_failures"
             | `get_lookups`
             | search $level_id$
             | stats dc(team_id) as dc_users by level_id, flag
@@ -336,15 +330,13 @@
       <title>Question History</title>
       <table>
         <search>
-          <query>
-            index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
-            | `get_lookups`
-            | search $level_id$
-            | eval action = if(sourcetype="ctf_failures","Attempted",if(sourcetype="ctf_scores","Solved","Hint"))
-            | eval msg = if(action="Attempted", team_name + " incorrectly guessed " + flag, if(action="Solved", team_name + " correctly solved", team_name + " a recieved hint"))
-            | table _time, team_name, action, msg
-            | sort - _time
-          </query>
+          <query>index=*  (sourcetype="ctf_failures" OR sourcetype="ctf_scores" OR sourcetype="ctf_hints" )
+| `get_lookups`
+| search $level_id$
+| eval action = if(sourcetype="ctf_failures","Attempted",if(sourcetype="ctf_scores","Solved","Hint"))
+| eval msg = if(action="Attempted", team_name + " incorrectly guessed " + flag, if(action="Solved", team_name + " correctly solved", team_name + " a recieved hint"))
+| table _time, team_name, action, msg
+| sort - _time</query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>

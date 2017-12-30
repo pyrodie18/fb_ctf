@@ -15,29 +15,29 @@ modtime = 1508512829.858011000
 access = read : [ admin, db_connect_admin, db_connect_user ], write : [ admin, db_connect_admin ]
 export = system
 owner = admin
-version = 7.0.0
-modtime = 1511150979.894894000
+version = 7.0.1
+modtime = 1513656874.693637000
 
 [db_inputs/CTF_Failures]
 access = read : [ admin, db_connect_admin, db_connect_user ], write : [ admin, db_connect_admin ]
 export = system
 owner = admin
-version = 7.0.0
-modtime = 1511151038.618844000
+version = 7.0.1
+modtime = 1513656898.278020000
 
 [db_inputs/CTF_Hints]
 access = read : [ admin, db_connect_admin, db_connect_user ], write : [ admin, db_connect_admin ]
 export = system
 owner = admin
-version = 7.0.0
-modtime = 1511151084.345822000
+version = 7.0.1
+modtime = 1513656920.305907000
 
 [db_inputs/CTF_Scores]
 access = read : [ admin, db_connect_admin, db_connect_user ], write : [ admin, db_connect_admin ]
 export = system
 owner = admin
-version = 7.0.0
-modtime = 1511151129.191051000
+version = 7.0.1
+modtime = 1513656944.024403000
 
 [transforms/levels]
 access = read : [ * ], write : [ admin ]
